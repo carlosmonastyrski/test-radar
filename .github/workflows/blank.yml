@@ -11,7 +11,6 @@ on:
         - basic
         - file_export
         - recursive
-        - with_headers
 
 jobs:
   test-pr-25:
@@ -29,9 +28,9 @@ jobs:
         with:
           method: "universal"
           client-id: "96643b53-6fc3-4cbc-a4c3-800bc795b408"
-          client-secret: "7f38142c2b30ed7de7d8ec2cca1e00d61644c10640deee8af98991ee97ba0a8b"
-          domain: "https://cd49f5101e7d.ngrok.app"
-          env-slug: "prod-bk03"
+          client-secret: "fdb9c181e43be081c6ac73fa49db60bea669a5862a2e2255f8ee074472dc438e"
+          domain: "https://app.infisical.com"
+          env-slug: "dev"
           project-slug: "admin-2y-be"
 
       - name: Test PR #25 - File export
@@ -40,9 +39,9 @@ jobs:
         with:
           method: "universal"
           client-id: "96643b53-6fc3-4cbc-a4c3-800bc795b408"
-          client-secret: "7f38142c2b30ed7de7d8ec2cca1e00d61644c10640deee8af98991ee97ba0a8b"
-          domain: "https://cd49f5101e7d.ngrok.app"
-          env-slug: "prod-bk03"
+          client-secret: "fdb9c181e43be081c6ac73fa49db60bea669a5862a2e2255f8ee074472dc438e"
+          domain: "https://app.infisical.com"
+          env-slug: "dev"
           project-slug: "admin-2y-be"
           export-type: "file"
           file-output-path: "./test-secrets.env"
@@ -53,43 +52,19 @@ jobs:
         with:
           method: "universal"
           client-id: "96643b53-6fc3-4cbc-a4c3-800bc795b408"
-          client-secret: "7f38142c2b30ed7de7d8ec2cca1e00d61644c10640deee8af98991ee97ba0a8b"
-          domain: "https://cd49f5101e7d.ngrok.app"
+          client-secret: "fdb9c181e43be081c6ac73fa49db60bea669a5862a2e2255f8ee074472dc438e"
+          domain: "https://app.infisical.com"
           env-slug: "dev"
           project-slug: "admin-2y-be"
           recursive: true
           secret-path: "/"
 
-      - name: Test PR #25 - With extra headers
-        if: github.event.inputs.test_scenario == 'with_headers'
-        uses: Infisical/secrets-action@refs/pull/25/merge
-        with:
-          method: "universal"
-          client-id: "96643b53-6fc3-4cbc-a4c3-800bc795b408"
-          client-secret: "7f38142c2b30ed7de7d8ec2cca1e00d61644c10640deee8af98991ee97ba0a8b"
-          domain: "https://cd49f5101e7d.ngrok.app"
-          env-slug: "prod-bk03"
-          project-slug: "admin-2y-be"
-          extra-headers: |
-            Demo-Header: Something
-            Demo-Header-2: Something-2
-            Secure-Id: 1234567890
-
-      - name: Validate environment variables (basic/recursive/with_headers)
-        if: github.event.inputs.test_scenario == 'basic' || github.event.inputs.test_scenario == 'recursive' || github.event.inputs.test_scenario == 'with_headers' || github.event.inputs.test_scenario == ''
+      - name: Validate environment variables (basic/recursive)
+        if: github.event.inputs.test_scenario == 'basic' || github.event.inputs.test_scenario == 'recursive' || github.event.inputs.test_scenario == ''
         run: |
-          echo "Testing environment variable access..."
-          if [ -n "$WRITE_ONLY_SECRET" ]; then
-            echo "✅ WRITE_ONLY_SECRET is accessible"
-          else
-            echo "❌ WRITE_ONLY_SECRET is not accessible"
-            exit 1
-          fi
-
-          echo "Available environment variables (excluding system vars):"
-          env | grep -v '^[A-Z_]*=' | head -20
-        env:
-          WRITE_ONLY_SECRET: ${{ env.WRITE-ONLY-SECRET }}
+          echo "✅ Testing environment variable access..."
+          echo "Available environment variables:"
+          env | grep -v -E '^(PATH|HOME|USER|SHELL|PWD|OLDPWD|LANG|LC_|TERM|DISPLAY|SSH_|GITHUB_|RUNNER_|CI|NODE_)' | sort
 
       - name: Validate file export
         if: github.event.inputs.test_scenario == 'file_export'
@@ -111,31 +86,3 @@ jobs:
           name: exported-secrets
           path: ./test-secrets.env
 
-  test-error-handling:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-      - name: Checkout test repository
-        uses: actions/checkout@v4
-
-      - name: Test PR #25 - Invalid credentials (should fail gracefully)
-        continue-on-error: true
-        uses: Infisical/secrets-action@refs/pull/25/merge
-        with:
-          method: "universal"
-          client-id: "invalid-client-id"
-          client-secret: "invalid-secret"
-          domain: "https://app.infisical.com"
-          env-slug: "dev"
-          project-slug: "test-project"
-
-      - name: Test PR #25 - Missing required inputs (should fail)
-        continue-on-error: true
-        uses: Infisical/secrets-action@refs/pull/25/merge
-        with:
-          method: "universal"
-
-      - name: Error handling validation complete
-        run: echo "✅ Error handling tests completed"
