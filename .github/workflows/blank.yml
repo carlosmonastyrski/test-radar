@@ -28,22 +28,22 @@ jobs:
         uses: Infisical/secrets-action@refs/pull/25/merge
         with:
           method: "universal"
-          client-id: "0627787b-63bb-45d2-90c7-7e47cbb68dc6"
-          client-secret: "d523192d966f5ab5f5e8de7b3e5cd110646449de39ecb14a42ad6a4f1254b75e"
+          client-id: "96643b53-6fc3-4cbc-a4c3-800bc795b408"
+          client-secret: "7f38142c2b30ed7de7d8ec2cca1e00d61644c10640deee8af98991ee97ba0a8b"
           domain: "https://cd49f5101e7d.ngrok.app"
           env-slug: "prod-bk03"
-          project-slug: "team-4-prod-6m-za"
+          project-slug: "admin-2y-be"
 
       - name: Test PR #25 - File export
         if: github.event.inputs.test_scenario == 'file_export'
         uses: Infisical/secrets-action@refs/pull/25/merge
         with:
           method: "universal"
-          client-id: "0627787b-63bb-45d2-90c7-7e47cbb68dc6"
-          client-secret: "d523192d966f5ab5f5e8de7b3e5cd110646449de39ecb14a42ad6a4f1254b75e"
+          client-id: "96643b53-6fc3-4cbc-a4c3-800bc795b408"
+          client-secret: "7f38142c2b30ed7de7d8ec2cca1e00d61644c10640deee8af98991ee97ba0a8b"
           domain: "https://cd49f5101e7d.ngrok.app"
           env-slug: "prod-bk03"
-          project-slug: "team-4-prod-6m-za"
+          project-slug: "admin-2y-be"
           export-type: "file"
           file-output-path: "./test-secrets.env"
 
@@ -52,11 +52,11 @@ jobs:
         uses: Infisical/secrets-action@refs/pull/25/merge
         with:
           method: "universal"
-          client-id: "0627787b-63bb-45d2-90c7-7e47cbb68dc6"
-          client-secret: "d523192d966f5ab5f5e8de7b3e5cd110646449de39ecb14a42ad6a4f1254b75e"
+          client-id: "96643b53-6fc3-4cbc-a4c3-800bc795b408"
+          client-secret: "7f38142c2b30ed7de7d8ec2cca1e00d61644c10640deee8af98991ee97ba0a8b"
           domain: "https://cd49f5101e7d.ngrok.app"
-          env-slug: "prod-bk03"
-          project-slug: "team-4-prod-6m-za"
+          env-slug: "dev"
+          project-slug: "admin-2y-be"
           recursive: true
           secret-path: "/"
 
@@ -65,11 +65,11 @@ jobs:
         uses: Infisical/secrets-action@refs/pull/25/merge
         with:
           method: "universal"
-          client-id: "0627787b-63bb-45d2-90c7-7e47cbb68dc6"
-          client-secret: "d523192d966f5ab5f5e8de7b3e5cd110646449de39ecb14a42ad6a4f1254b75e"
+          client-id: "96643b53-6fc3-4cbc-a4c3-800bc795b408"
+          client-secret: "7f38142c2b30ed7de7d8ec2cca1e00d61644c10640deee8af98991ee97ba0a8b"
           domain: "https://cd49f5101e7d.ngrok.app"
           env-slug: "prod-bk03"
-          project-slug: "team-4-prod-6m-za"
+          project-slug: "admin-2y-be"
           extra-headers: |
             Demo-Header: Something
             Demo-Header-2: Something-2
